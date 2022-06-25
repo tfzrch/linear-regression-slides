@@ -239,16 +239,16 @@ class: left, inverse
 
 # Scenario
 
-- You work as a data scientist for a company that makes cookies
+- You're a data scientist for a cookie manufacturer
 
 --
 
-- The government is proposing taxes on foods with calorie counts higher
-  than a certain threshold
+- There will soon be new taxes on foods with high calories
 
 --
 
-- Your company wants to be ready to put new products into production
+- Your company wants to be ready to put new products with fewer calories into
+  production
 
 ---
 
@@ -256,13 +256,11 @@ class: left, inverse
 
 # Scenario
 
-- You have a team of bakers and food scientists creating proposals for new
-  recipes
+- There is a team creating proposals for new recipes
   
 --
 
-- They want to test only recipes likely to have calories below the 
-  threshold.
+- They want to test only recipes likely to have calories below the threshold.
   
 --
 
