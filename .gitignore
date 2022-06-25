@@ -1,0 +1,5 @@
+# Rmd output files
+Rmd/**/*.html
+Rmd/**/*_files/
+Rmd/**/*_cache/
+Rmd/**/xaringan-themer.css
