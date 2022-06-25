@@ -39,8 +39,8 @@ pal <- yaml::read_yaml(here::here("inst", "css", "palette.yml"))
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
-source(here::here("R", "xaringanthemer.R"))
-xaringan_theme()
+source(here::here("R", "xaringan-themer.R"))
+xaringan_theme(pal=pal)
 
 # additional tweaks - title slide
 xaringanthemer::style_extra_css(
@@ -52,7 +52,7 @@ xaringanthemer::style_extra_css(
       "position" = "absolute",
       "right" = "10px",
       "bottom" = "10px",
-      "font-size" = ".75rem"
+      "font-size" = ".65rem"
     )
   )
 )
@@ -116,7 +116,7 @@ xaringanthemer::style_extra_css(
 ```{r ggplot-theme, echo=FALSE}
 # ggplot theme
 gg_theme <- function() {
-  theme_xaringan() +
+  xaringanthemer::theme_xaringan() +
     theme(
       axis.line = element_line(colour = pal$space.cadet),
       panel.grid = element_line(colour = pal$space.cadet),
@@ -141,7 +141,7 @@ class: title-slide, middle, left
 ## `r rmarkdown::metadata$subtitle`
 
 **`r rmarkdown::metadata$author`**<br>
-`r Sys.Date()`
+`r format.Date(Sys.Date(), "%a, %d %b %Y")`
 
 ]
 
