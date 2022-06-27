@@ -34,7 +34,7 @@ library(tidyverse)
 ```
 
 ```{r xaringan-extra, echo=FALSE, include=T}
-xaringanExtra::use_xaringan_extra(c("tile_view"))
+xaringanExtra::use_xaringan_extra(c("tile_view", "tachyons"))
 ```
 
 ```{r palette, echo=FALSE}
@@ -136,8 +136,8 @@ gg_theme <- function() {
     theme(
       axis.line = element_line(colour = pal$space.cadet),
       panel.grid = element_line(colour = pal$space.cadet),
-      text = element_text(size = 24),
-      axis.title = element_text(size = 10)
+      text = element_text(size = 20),
+      axis.title = element_text(size = 24)
     )
 }
 
