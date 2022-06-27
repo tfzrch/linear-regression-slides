@@ -634,11 +634,269 @@ plt_demo_fit <- plt_random_cookies +
   gganimate::ease_aes("sine-in-out")
 
 plt_demo_fit
-# gganimate::animate(
-#   plot = plt_demo_fit, 
-#   fps = 20, 
-#   device = "ragg_png",
-#   pointsize = 10,
-#   scaling = .25
-# )
 ```
+
+
+---
+class: middle, center, inverse
+
+## What makes a model 'good'?
+
+---
+class: middle, center
+
+.pull-left[
+
+How much does it *explain*?
+
+]
+
+.pull-right[
+
+How much does it get *wrong*?
+
+]
+
+---
+class: center
+
+### Residuals
+
+.pull-left.left[
+
+- Difference between true $y_i$ and the prediction $\hat{y}_i$
+
+- $y_i - \hat{y}_i$
+
+- **Residuals** - the 'residue', the bit the model doesn't provide, the bit left
+  behind
+
+- Positive and negative residuals cancel each other out
+
+]
+
+.pull-right.left.middle[
+
+```{r demo-resid, echo=FALSE, fig.height=7}
+#| cache = TRUE,
+#| dependson = "cookie-calories-lm"
+#| 
+demo_resid <- random_cookies %>% 
+  mutate(
+    y_pred = predict(lm_cookies, newdata = tibble(x)),
+    error = y - y_pred
+  ) %>% 
+  rowid_to_column()
+
+plt_demo_resid <- ggplot(demo_resid, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x, col = pal$vermilion) +
+  geom_linerange(mapping = aes(ymin = y_pred, ymax = y), col = pal$queen.blue) +
+  labs(x = "Ingredients", y = "Calories")
+
+plt_demo_resid
+```
+
+]
+
+---
+class: center
+
+### How much does it **explain**?
+
+.pull-left[
+
+$\begin{align*}R^2 &= 1 - \frac{RSS}{TSS}\\[10pt]&= 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}\end{align*}$
+
+**How much variance is accounted for by the model?**
+
+
+]
+
+.pull-right.left[
+
+- "Sum of Squares" = "Square all the values, then add them up"
+
+- RSS = Apply Sum of Squares to Residuals
+
+- TSS = Apply Sum of Squares to differences between true values and the mean
+
+]
+
+---
+class: center, inverse
+
+### How much does it get **wrong**?
+
+**Problem**: Positive and negative residuals cancel each other out
+
+***
+
+.pull-left[
+
+#### Solutions
+
+.left[
+
+- Ignore the $\pm$ sign
+
+- Square the values
+
+  .center[
+  
+- $2^2 = 4$ 
+- $-2^2 = 4$
+  
+  ]
+
+]
+]
+
+.pull-right[
+
+#### Statistics
+
+.left[
+
+- Mean Absolute Error - MAE
+
+- Mean Squared Error - MSE
+
+]
+]
+
+---
+class: center
+
+### MAE vs MSE
+
+.pull-left.left[
+
+- Each residual is treated equally
+
+- The final number is on the same scale as the data - easy to interpret
+
+]
+
+.pull-right.left[
+
+- Bigger residuals are penalised more than small residuals
+
+- The final number is a squared value compared to the data - hard to interpret
+
+]
+
+---
+class: center
+
+### Root Mean Squared Error
+
+Solves the compromise between MAE and MSE
+
+.left[
+
+- Big errors are penalised
+
+- Same scale as the data, easy to interpret
+
+]
+
+---
+class: center
+
+### Title
+
+.pull-left[]
+
+
+```{r demo-complete-metrics, echo=FALSE}
+demo_complete_metrics <- yardstick::metric_set(
+  rmse = yardstick::rmse,
+  r2 = yardstick::rsq
+)
+```
+
+```{r demo-complete, echo=FALSE}
+#| cache = TRUE,
+#| dependson = "cookie-calories-lm"
+#| 
+# Generate data for complete LR demo animation
+
+# Tibble of ids for each version, plus random coefs
+demo_complete <- tibble(
+  id = 1:5,
+  m = rnorm(5, mean = lm_cookies$coefficients[2], sd = .35),
+  c = rnorm(5, mean = lm_cookies$coefficients[1], sd = .35)
+)
+
+# Generate predictions and stats
+demo_complete <- demo_complete %>% 
+  mutate(
+    # Add linear model with the randomly generated coefs
+    lm = map2(m, c, function(m, c, lm = lm_cookies) {
+      lm$coefficients[2] <- m
+      lm$coefficients[1] <- c
+      lm
+    }),
+    # Make predictions using new models
+    data = map(lm, function(model, data = random_cookies) {
+      data$y_pred <- predict(model, newdata = data)
+      data <- data %>% 
+        mutate(resid = y - y_pred)
+    }),
+    # Get RMSE and R^2 for each model
+    eval = map(data, demo_complete_metrics, truth = y, estimate = y_pred) %>% 
+      map(select, -.estimator) %>% 
+      map(pivot_wider, names_from = .metric, values_from = .estimate),
+    # Get min/max values for regression line
+    line = map(lm, get_lm_line, data = random_cookies)
+  ) %>% 
+  # Unnest
+  unnest_wider(eval) %>% 
+  # Sort by RMSE and re-assign ids
+  arrange(desc(rmse)) %>% 
+  mutate(id = 1:5)
+
+# Split into separate frames for labels and data
+demo_complete <- list(
+  labels = demo_complete %>% select(id, m, c, rmse, rsq),
+  line = demo_complete %>% select(id, line) %>% unnest(line),
+  resid = demo_complete %>% select(id, data) %>% unnest(data)
+)
+```
+
+```{r plt-demo-complete, echo=FALSE}
+#| cache = F,
+#| dependson = "demo-complete"
+
+# Plot full demo
+plt_demo_complete <- ggplot(random_cookies, aes(x, y)) +
+  geom_point() +
+  labs(
+    x = "Ingredients", 
+    y = "Calories"
+  ) +
+  geom_line(
+    data = demo_complete$line, 
+    mapping = aes(group = id), 
+    col = pal$vermilion
+  ) +
+  geom_linerange(
+    data = demo_complete$resid, 
+    mapping = aes(group = id, ymin = y, ymax = y_pred),
+    col = pal$queen.blue
+  ) +
+  theme(
+    axis.text = element_blank()
+  ) +
+  gganimate::transition_states(states = id)
+```
+
+.pull-right[
+
+```{r show-plt-demo-complete, echo=FALSE, fig.height=10, fig.width=10}
+# Animation
+gganimate::animate(plt_demo_complete, renderer = gganimate::magick_renderer())
+```
+
+]
