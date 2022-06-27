@@ -1,0 +1,25 @@
+this_session:
+  - ksb: K14
+    set: k
+    am: 2
+    desc: principles of descriptive, predictive, and prescriptive analytics
+  - ksb: S11
+    set: s
+    am: 2
+    desc: apply predictive analytics in the use of data
+  - ksb: S2
+    set: s
+    am: 1
+    desc: implement stages of the data analysis lifecycle
+sets:
+  - set: k
+    set_name: Knowledge
+  - set: s
+    set_name: Skills
+  - set: b
+    set_name: Behaviours
+ams:
+  - am: 1
+    am_name: AM1 (Work Based Project)
+  - am: 2
+    am_name: AM2 (Portfolio)
