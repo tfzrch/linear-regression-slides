@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Linear Regression</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tom Fowler, PhD" />
+    <meta name="date" content="2022-06-27" />
+    <script src="linear-regression-30min_files/header-attrs/header-attrs.js"></script>
+    <meta name="description" content="A 30 minute introduction to linear regression concepts"/>
+    <meta name="generator" content="xaringan and remark.js"/>
+    <meta name="github-repo" content="tfzrch/linear-regression-slides"/>
+    <meta name="twitter:title" content="Linear Regression: How it works, in 30 minutes"/>
+    <meta name="twitter:description" content="A 30 minute introduction to linear regression concepts"/>
+    <meta name="twitter:url" content="https://tfzrch.github.io/slides/lr/lr-30min"/>
+    <meta name="twitter:card" content="summary"/>
+    <meta property="og:title" content="Linear Regression: How it works, in 30 minutes"/>
+    <meta property="og:description" content="A 30 minute introduction to linear regression concepts"/>
+    <meta property="og:url" content="https://tfzrch.github.io/slides/lr/lr-30min"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:locale" content="en_GB"/>
+    <meta property="article:author" content="Tom Fowler"/>
+    <link href="linear-regression-30min_files/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="linear-regression-30min_files/tile-view/tile-view.js"></script>
+    <link href="linear-regression-30min_files/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="linear-regression-30min_files/xaringanExtra-progressBar/progress-bar.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+name: title
+layout: false
+class: title-slide, middle, left
+
+.pull-left[
+
+# Linear Regression
+
+## How it works, in 30 minutes
+
+**Tom Fowler, PhD**&lt;br&gt;
+Mon, 27 Jun 2022
+
+]
+
+.license[
+
+These slides are available at https://tfzrch.github.io/slides/lr/lr-30min
+
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://github.com/tfzrch/linear-regression-slides/blob/main/LICENSE.md)
+
+Background: Photo by &lt;a href="https://unsplash.com/@dancristianpaduret?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"&gt;Dan Cristian Pădureț&lt;/a&gt; on &lt;a href="https://unsplash.com/s/photos/paint?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"&gt;Unsplash&lt;/a&gt;
+  
+
+]
+
+<style>.xe__progress-bar__container {
+  top:0;
+  opacity: 1;
+  position:absolute;
+  right:0;
+  left: 0;
+}
+.xe__progress-bar {
+  height: 2px;
+  background-color: #7ae582;
+  width: calc(var(--slide-current) / var(--slide-total) * 100%);
+}
+.remark-visible .xe__progress-bar {
+  animation: xe__progress-bar__wipe 200ms forwards;
+  animation-timing-function: cubic-bezier(.86,0,.07,1);
+}
+@keyframes xe__progress-bar__wipe {
+  0% { width: calc(var(--slide-previous) / var(--slide-total) * 100%); }
+  100% { width: calc(var(--slide-current) / var(--slide-total) * 100%); }
+}</style>
+
+---
+
+name: about-me
+layout: false
+class: about-me-slide, inverse, middle, center
+
+# About me
+
+&lt;img style="border-radius: 50%;" src="https://tfzrch.github.io/inst/img/profile.jpg" width="150px"/&gt;
+
+## Tom Fowler, PhD
+
+### Data Coach
+
+.icons[
+
+[<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg> tfzrch.github.io](https://tfzrch.github.io/index.html)
+[<svg aria-label="GitHub" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>GitHub</title><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> @tfzrch](https://github.com/tfzrch)
+[<svg aria-label="LinkedIn" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>LinkedIn</title><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg> tfzrch](https://www.linkedin.com/in/tfzrch/)
+
+]
+
+---
+class: center, middle
+
+# Machine Learning
+
+???
+  Linear regression is a form of machine learning. So let's first define what
+  that means. Can anyone describe what they think machine learning is?
+
+---
+class: center
+
+## Robots baking cookies
+
+![](../../inst/img/cookies.jpg)
+
+???
+  Think about a robot in a baked-goods factory. Because they're a machine they
+  don't know what makes a good cookie - they don't know anything about the end
+  result of what they're doing.
+  
+  Instead they're given ingredients and a set of quantities and instructions 
+  regarding what to go with them. It's a human supplying this information.
+  
+  This is traditional programming.
+
+---
+class: center
+
+## Robots baking cookies
+
+.pull-left[
+
+![](../../inst/img/ingredients.jpg)
+
+]
+
+.pull-right[
+
+![](../../inst/img/cookies.jpg)
+
+]
+
+???
+  Machine learning is different. Here, we're creating something that can guess - 
+  accurately - at the right output, having worked out for itself what the 
+  recipe is.
+  
+  We give lots examples of inputs and outputs, and the machine calculates what
+  the instructions should be to approximate new outputs from new inputs.
+  
+  **Why might there be recipes out there in world that make sense to write like
+  this**?
+  
+  **Answer:** Some recipes are really complex and would be hard for a human to
+  describe with code.
+
+---
+class: left, inverse
+
+# Scenario
+
+- You're a data scientist for a cookie manufacturer
+
+--
+
+- There will soon be new taxes on foods with high calories
+
+--
+
+- Your company wants to be ready to put new products with fewer calories into
+  production
+
+---
+
+class: left, inverse
+
+# Scenario
+
+- There is a team creating proposals for new recipes
+  
+--
+
+- They want to test only recipes likely to have calories below the threshold.
+  
+--
+
+- They need a way to **predict calories from ingredients**.
+  
+--
+
+- You have **recipes and calorie counts** for old cookies already in production
+
+---
+
+## Cookie Calories
+
+.pull-left[
+
+
+
+
+&lt;img src="linear-regression-30min_files/figure-html/show-plt-random-cookies-1.png" width="100%" /&gt;
+]
+
+.pull-right.left[
+
+- Points - existing cookie recipes
+
+- 'X' - a measure of a single ingredient
+
+- 'Y' - a measure of the calories
+
+]
+
+
+???
+  So 'x' and 'y' are our variables. 'x' is going to be a measure of a single
+  ingredient for now, maybe sugar or butter, 'y' is the calories.
+  
+  Each of the points represents a single cookie recipe that's already in
+  production.
+  
+  **How can we describe these data based on the scatter plot?**
+  
+
+---
+
+## Cookie Calories
+
+.pull-left[
+&lt;img src="linear-regression-30min_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
+]
+
+.pull-right.left[
+
+- Positively correlated
+
+- Pearson `\(r\)` - 0.73
+
+]
+
+---
+
+## Cookie Calories
+
+.pull-left[
+
+&lt;img src="linear-regression-30min_files/figure-html/plot-random-cookies-lm-1.png" width="100%" /&gt;
+
+]
+
+.pull-right[
+
+- Linear model - the 'recipe' that best describes *all* the cookies
+
+]
+
+
+---
+class: left, inverse
+
+## Recipes
+
+`$$y = mx + c$$`
+--
+
+***
+
+- `\(y\)` = our output - `calories`
+
+--
+
+- `\(x\)` = our input(s) - `ingredients`
+
+
+
+---
+class: inverse
+
+### Gradient - `\(m\)`
+
+`$$y = mx + c$$`
+
+***
+
+.pull-left[
+
+- `\(m\)` = slope, gradient
+- 'how much change in `\(y\)` for `\(\pm 1\)` change in `\(x\)`?'
+
+]
+
+.pull-right[
+
+
+
+&lt;img src="linear-regression-30min_files/figure-html/plt-demo-slope-1.gif" width="100%" /&gt;
+
+]
+
+---
+class: left, inverse
+
+### Intercept - `\(c\)`
+
+`$$y = mx + c$$`
+
+***
+
+.pull-left[
+
+- `\(c\)` = some constant - 
+- 'where does the model cross the axis?'
+- 'what is `\(y\)` when `\(x = 0\)`?'
+
+]
+
+.pull-right[
+
+
+
+&lt;img src="linear-regression-30min_files/figure-html/plt-demo-intercept-1.gif" width="100%" /&gt;
+
+
+]
+
+---
+class: center
+
+### Gradient and Intercept Together
+
+
+
+&lt;img src="linear-regression-30min_files/figure-html/plt-demo-fit-1.gif" width="100%" /&gt;
+
+---
+class: middle, center
+
+## Your turn!
+
+### In the following plots, which needs adjusting to fit well?
+
+Intercept - `\(c\)`
+
+or
+
+Gradient - `\(m\)`
+
+---
+class: middle, center
+
+### Your turn (1)
+
+
+
+.pull-left[
+
+&lt;img src="linear-regression-30min_files/figure-html/show-your-turn-1-int-1.png" width="100%" /&gt;
+
+]
+
+---
+class: middle, center
+
+### Your turn (1) - answer
+
+.pull-left[
+
+&lt;img src="linear-regression-30min_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
+
+]
+
+.pull-right.middle.f1[
+
+**Intercept**
+
+]
+
+---
+class: middle, center
+
+### Your turn (2)
+
+
+
+.pull-left[
+
+&lt;img src="linear-regression-30min_files/figure-html/show-your-turn-2-gradient-1.png" width="100%" /&gt;
+
+]
+
+---
+class: middle, center
+
+### Your turn (2) - answer
+
+.pull-left[
+
+&lt;img src="linear-regression-30min_files/figure-html/unnamed-chunk-3-1.png" width="100%" /&gt;
+
+]
+
+.pull-right.middle.f1[
+
+**Gradient**
+
+]
+
+---
+class: middle, center, inverse
+
+## What makes a model 'good'?
+
+---
+class: middle, center
+
+.pull-left[
+
+How much does it *explain*?
+
+]
+
+.pull-right[
+
+How much does it get *wrong*?
+
+]
+
+---
+class: center
+
+### Residuals
+
+.pull-left.left[
+
+- Difference between true `\(y_i\)` and the prediction `\(\hat{y}_i\)`
+
+- `\(y_i - \hat{y}_i\)`
+
+- **Residuals** - the 'residue', the bit the model doesn't provide, the bit left
+  behind
+
+- Positive and negative residuals cancel each other out
+
+]
+
+.pull-right.left.middle[
+
+&lt;img src="linear-regression-30min_files/figure-html/demo-resid-1.png" width="100%" /&gt;
+
+]
+
+---
+class: center
+
+### How much does it **explain**?
+
+.pull-left[
+
+`\(\begin{align*}R^2 &amp;= 1 - \frac{RSS}{TSS}\\[10pt]&amp;= 1 - \frac{\text{Residual Sum of Squares}}{\text{Total Sum of Squares}}\end{align*}\)`
+
+**How much variance is accounted for by the model?**
+
+
+]
+
+.pull-right.left[
+
+- "Sum of Squares" = "Square all the values, then add them up"
+
+- RSS = Apply Sum of Squares to Residuals
+
+- TSS = Apply Sum of Squares to differences between true values and the mean
+
+]
+
+---
+class: center, inverse
+
+### How much does it get **wrong**?
+
+**Problem**: Positive and negative residuals cancel each other out
+
+***
+
+.pull-left[
+
+#### Solutions
+
+.left[
+
+- Ignore the `\(\pm\)` sign
+
+- Square the values
+
+  .center[
+  
+- `\(2^2 = 4\)` 
+- `\(-2^2 = 4\)`
+  
+  ]
+
+]
+]
+
+.pull-right[
+
+#### Statistics
+
+.left[
+
+- Mean Absolute Error - MAE
+
+- Mean Squared Error - MSE
+
+]
+]
+
+---
+class: center
+
+### MAE vs MSE
+
+.pull-left.left[
+
+- Each residual is treated equally
+
+- The final number is on the same scale as the data - easy to interpret
+
+]
+
+.pull-right.left[
+
+- Bigger residuals are penalised more than small residuals
+
+- The final number is a squared value compared to the data - hard to interpret
+
+]
+
+---
+class: center
+
+### Root Mean Squared Error
+
+Solves the compromise between MAE and MSE
+
+.left[
+
+- Big errors are penalised
+
+- Same scale as the data, easy to interpret
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
