@@ -295,7 +295,7 @@ class: left, inverse
 ## Cookie Calories
 
 .pull-left[
-```{r random-cookies, echo=FALSE, cache=TRUE}
+```{r random-cookies, echo=FALSE}
 # Generate random data
 random_cookies <- tibble(x = rnorm(100), y = x + rnorm(100))
 ```
@@ -395,8 +395,6 @@ $$y = mx + c$$
 - $x$ = our input(s) - `ingredients`
 
 ```{r cookie-calories-lm, echo=FALSE}
-#| cache=TRUE,
-#| dependson='random-cookies'
 
 # Get the real model for the plotted random data
 lm_cookies <- lm(y ~ x, data = random_cookies)
@@ -440,9 +438,6 @@ $$y = mx + c$$
 .pull-right[
 
 ```{r demo-slope, echo=FALSE}
-#| cache=FALSE, 
-#| dependson='cookie-calories-lm'
-
 # Generate data to illustrate slope
 
 ## - Generate random x coefficients using rnorm around mean of real coefficient
@@ -465,9 +460,6 @@ demo_slope_data <- demo_slope_data %>%
 ```
 
 ```{r plt-demo-slope, echo=F, fig.height=7}
-#| cache = TRUE,
-#| dependson='demo-slope'
-
 plt_random_cookies +
   geom_line(
     data = lm_cookies_line, 
@@ -505,9 +497,6 @@ $$y = mx + c$$
 .pull-right[
 
 ```{r demo-intercept, echo=FALSE}
-#| cache=FALSE, 
-#| dependson='cookie-calories-lm'
-
 # Generate data to illustrate intercept
 
 ## - Generate random x intercept using rnorm around a mean of real intercept
@@ -530,9 +519,6 @@ demo_intercept_data <- demo_intercept_data %>%
 ```
 
 ```{r plt-demo-intercept, echo=F, fig.height=7}
-#| cache = TRUE,
-#| dependson='demo-intercept'
-
 plt_random_cookies +
   geom_line(
     data = lm_cookies_line, 
@@ -557,9 +543,6 @@ class: center
 ### Gradient and Intercept Together
 
 ```{r demo-fit, echo=FALSE}
-#| cache=FALSE,
-#| dependson="cookie-calories-lm"
-
 # Create data for a demo of fit
 
 # Create a df where intercept and x are a vector from rnorm, using the real 
@@ -615,9 +598,6 @@ demo_fit <- demo_fit %>%
 ```
 
 ```{r plt-demo-fit, echo=FALSE, fig.height=4}
-#| cache=TRUE,
-#| dependson="demo-fit"
-
 plt_demo_fit <- plt_random_cookies +
   geom_line(
     data = lm_cookies_line,
@@ -780,9 +760,6 @@ class: center
 .pull-right.left.middle[
 
 ```{r demo-resid, echo=FALSE, fig.height=7}
-#| cache = TRUE,
-#| dependson = "cookie-calories-lm"
-#| 
 demo_resid <- random_cookies %>% 
   mutate(
     y_pred = predict(lm_cookies, newdata = tibble(x)),

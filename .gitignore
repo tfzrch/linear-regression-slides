@@ -5,3 +5,7 @@ Rmd/**/*.html
 Rmd/**/*_files/
 Rmd/**/*_cache/
 Rmd/**/xaringan-themer.css
+
+
+# Don't ignore slide output (HTML)
+!Rmd/linear-regression-30min/linear-regression-30min.html
