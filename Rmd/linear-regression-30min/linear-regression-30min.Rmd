@@ -67,7 +67,7 @@ xaringan_theme(pal=pal)
 xaringanthemer::style_extra_css(
   css = list(    
     ".title-slide .license" = list(
-      "background-color" = paste0(pal$cultured, "aa"), 
+      "background-color" = paste0(pal$cultured, "f1"), 
       "border-radius" = ".5rem",
       "padding" = "0.2rem 0.75rem",
       "position" = "absolute",
@@ -184,7 +184,8 @@ These slides are available at https://tfzrch.github.io/slides/lr/lr-30min
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://github.com/tfzrch/linear-regression-slides/blob/main/LICENSE.md)
 
-Background:
+Background: Photo by <a href="https://unsplash.com/@dancristianpaduret?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Dan Cristian Pădureț</a> on <a href="https://unsplash.com/s/photos/paint?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
 
 ]
 
