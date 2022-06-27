@@ -771,7 +771,8 @@ plt_demo_resid <- ggplot(demo_resid, aes(x, y)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, formula = y ~ x, col = pal$vermilion) +
   geom_linerange(mapping = aes(ymin = y_pred, ymax = y), col = pal$queen.blue) +
-  labs(x = "Ingredients", y = "Calories")
+  labs(x = "Ingredients", y = "Calories") +
+  theme(axis.text = element_blank())
 
 plt_demo_resid
 ```
