@@ -440,7 +440,7 @@ $$y = mx + c$$
 .pull-right[
 
 ```{r demo-slope, echo=FALSE}
-#| cache=TRUE, 
+#| cache=FALSE, 
 #| dependson='cookie-calories-lm'
 
 # Generate data to illustrate slope
@@ -505,7 +505,7 @@ $$y = mx + c$$
 .pull-right[
 
 ```{r demo-intercept, echo=FALSE}
-#| cache=TRUE, 
+#| cache=FALSE, 
 #| dependson='cookie-calories-lm'
 
 # Generate data to illustrate intercept
@@ -557,7 +557,7 @@ class: center
 ### Gradient and Intercept Together
 
 ```{r demo-fit, echo=FALSE}
-#| cache=TRUE,
+#| cache=FALSE,
 #| dependson="cookie-calories-lm"
 
 # Create data for a demo of fit
@@ -636,6 +636,108 @@ plt_demo_fit <- plt_random_cookies +
 plt_demo_fit
 ```
 
+---
+class: middle, center
+
+## Your turn!
+
+### In the following plots, which needs adjusting to fit well?
+
+Intercept - $c$
+
+or
+
+Gradient - $m$
+
+---
+class: middle, center
+
+### Your turn (1)
+
+```{r your-turn-1-int, echo=FALSE}
+plt_your_turn_1_int <- ggplot(random_cookies, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, col = pal$vermilion) +
+  geom_line(
+    data = demo_intercept_data %>% filter(id == 1),
+    group = 1,
+    col = pal$queen.blue,
+    size = 2
+  ) +
+  labs(x = "Ingredients", y = "Calories") +
+  theme(axis.text = element_blank())
+```
+
+.pull-left[
+
+```{r show-your-turn-1-int, fig.height = 7, echo=FALSE}
+plt_your_turn_1_int
+```
+
+]
+
+---
+class: middle, center
+
+### Your turn (1) - answer
+
+.pull-left[
+
+```{r ref.label='show-your-turn-1-int', echo=FALSE, fig.height=7}
+```
+
+]
+
+.pull-right.middle.f1[
+
+**Intercept**
+
+]
+
+---
+class: middle, center
+
+### Your turn (2)
+
+```{r your-turn-2-gradient, echo=FALSE}
+plt_your_turn_2_grad <- ggplot(random_cookies, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, col = pal$vermilion) +
+  geom_line(
+    data = demo_slope_data %>% filter(id == 1),
+    group = 1,
+    col = pal$queen.blue,
+    size = 2
+  ) +
+  labs(x = "Ingredients", y = "Calories") +
+  theme(axis.text = element_blank())
+```
+
+.pull-left[
+
+```{r show-your-turn-2-gradient, fig.height=7, echo=FALSE}
+plt_your_turn_2_grad
+```
+
+]
+
+---
+class: middle, center
+
+### Your turn (2) - answer
+
+.pull-left[
+
+```{r ref.label='show-your-turn-2-gradient', echo=FALSE, fig.height=7}
+```
+
+]
+
+.pull-right.middle.f1[
+
+**Gradient**
+
+]
 
 ---
 class: middle, center, inverse
