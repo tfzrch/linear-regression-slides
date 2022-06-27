@@ -1,6 +1,6 @@
 ---
 title: "Linear Regression"
-subtitle: "How it works, in 30 mins"
+subtitle: "How it works, in 30 minutes"
 author: 
   - "Tom Fowler, PhD"
 date: '`r Sys.Date()`'
@@ -27,6 +27,23 @@ knitr::opts_chunk$set(
   warning = FALSE,
   hiline = TRUE
 )
+```
+
+```{r metathis, echo=FALSE}
+library(metathis)
+meta() %>%
+  meta_general(
+    description = "A 30 minute introduction to linear regression concepts",
+    generator = "xaringan and remark.js",
+  ) %>%
+  meta_name("github-repo" = "tfzrch/linear-regression-slides") %>%
+  meta_social(
+    title = "Linear Regression: How it works, in 30 minutes",
+    url = "https://tfzrch.github.io/slides/linear-regression/linear-regression-30min",
+    og_type = "website",
+    og_locale = "en_GB",
+    og_author = "Tom Fowler"
+  )
 ```
 
 ```{r packages, echo=FALSE}
