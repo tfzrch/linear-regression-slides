@@ -33,6 +33,10 @@ knitr::opts_chunk$set(
 library(tidyverse)
 ```
 
+```{r xaringan-extra, echo=FALSE, include=T}
+xaringanExtra::use_xaringan_extra(c("tile_view"))
+```
+
 ```{r palette, echo=FALSE}
 # Define palette
 pal <- yaml::read_yaml(here::here("inst", "css", "palette.yml"))
@@ -108,12 +112,24 @@ xaringanthemer::style_extra_css(
           c("turquoise", 33)
         )
       )
+    ),
+    ".center > ul" = list(
+      "list-style-type" = "none"
     )
   )
 )
 ```
 
 ```{r ggplot-theme, echo=FALSE}
+# Register fonts
+sysfonts::font_add(
+  family = "Noto Sans", 
+  regular = "/usr/share/fonts/noto/NotoSans-Regular.ttf",
+  bold = "/usr/share/fonts/noto/NotoSans-Bold.ttf",
+  italic = "/usr/share/fonts/noto/NotoSans-Italic.ttf",
+  bolditalic = "/usr/share/fonts/noto/NotoSans-BoldItalic.ttf"
+)
+
 # ggplot theme
 gg_theme <- function() {
   xaringanthemer::theme_xaringan() +
@@ -121,7 +137,7 @@ gg_theme <- function() {
       axis.line = element_line(colour = pal$space.cadet),
       panel.grid = element_line(colour = pal$space.cadet),
       text = element_text(size = 24),
-      axis.title = element_text(size = 30)
+      axis.title = element_text(size = 10)
     )
 }
 
@@ -151,9 +167,13 @@ These slides are available at <>.
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://github.com/tfzrch/linear-regression-slides/blob/main/LICENSE.md)
 
+Background:
+
 ]
 
-
+```{r xaringan-extra-progress-bar, echo=FALSE}
+xaringanExtra::use_progress_bar(pal$light.green, height = "2px")
+```
 
 ---
 
