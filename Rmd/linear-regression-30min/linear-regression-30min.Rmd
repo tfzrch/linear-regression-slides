@@ -39,7 +39,7 @@ meta() %>%
   meta_name("github-repo" = "tfzrch/linear-regression-slides") %>%
   meta_social(
     title = "Linear Regression: How it works, in 30 minutes",
-    url = "https://tfzrch.github.io/slides/linear-regression/linear-regression-30min",
+    url = "https://tfzrch.github.io/slides/lr/lr-30min",
     og_type = "website",
     og_locale = "en_GB",
     og_author = "Tom Fowler"
@@ -180,7 +180,7 @@ class: title-slide, middle, left
 
 .license[
 
-These slides are available at <>. 
+These slides are available at https://tfzrch.github.io/slides/lr/lr-30min
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://github.com/tfzrch/linear-regression-slides/blob/main/LICENSE.md)
 
