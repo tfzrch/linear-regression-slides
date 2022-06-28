@@ -14,6 +14,10 @@ Educational slides covering linear regression. Built using :package: xaringan.
 
 ### Linear Regression: How it works, in 30 minutes
 
+- [View Slides](https://tfzrch.github.io/linear-regression-slides/lr-30min)
+- [Source](https://github.com/tfzrch/linear-regression-slides/tree/main/Rmd/linear-regression-30min)
+- [Lesson Plan](https://github.com/tfzrch/linear-regression-slides/blob/main/Rmd/linear-regression-30min/README.md)
+
 This slide deck covers the fundamentals of linear regression from an 
 'application'/'purpose' perspective. It's not intended to be a resource on
 how to build a model with code. Instead it focusses on the underlying statistical
@@ -24,7 +28,6 @@ The intended audience is Level 4.
 I wrote this deck for an interview for an apprenticeships-based instructor role,
 so the materials include a very basic lesson plan oriented around the Level 4 
 Data Analyst apprenticeship standards.
-
 
 ## License
 
