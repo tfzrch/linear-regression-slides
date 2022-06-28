@@ -1,6 +1,13 @@
 Linear Regression: How it works, in 30 minutes
 ================
-2022-06-27
+2022-06-28
+
+<div>
+
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="https://img.shields.io/badge/license-CC BY--NC--SA 4.0-green?style=flat-square&logo=creative-commons"></a>
+<a href="https://mit-license.org/"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square"></a>
+
+</div>
 
 This slide deck covers the fundamentals of linear regression from an
 application/purpose perspective.

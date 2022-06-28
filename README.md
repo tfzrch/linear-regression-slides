@@ -1,5 +1,10 @@
 # linear-regression-slides
 
+<div>
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="https://img.shields.io/badge/license-CC BY--NC--SA 4.0-green?style=flat-square&logo=creative-commons"></a>
+  <a href="https://mit-license.org/"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square"></a>
+</div>
+
 Educational slides covering linear regression. Built using :package: xaringan.
 
 ## Contents
